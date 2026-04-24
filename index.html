@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astrological Services | Premium Consultations</title>
+    <title>Astra | Astrological Services</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -18,34 +18,23 @@
             theme: {
                 extend: {
                     colors: {
-                        celestial: {
-                            dark: '#07090F',     // Deep space background
-                            card: '#121521',     // Slightly lighter for cards
-                            gold: '#D4AF37',     // Luxury gold
-                            goldlight: '#F3E5AB',// Pale gold for text
-                            mystic: '#4B3268',   // Deep nebula purple
-                            stardust: '#8B93A5'  // Muted grey/blue for body text
-                        }
+                        space: {
+                            900: '#03050c', // Deepest space
+                            800: '#0a0f25', // Dark sky
+                            700: '#141c3a', // Nebula shadow
+                        },
+                        gold: {
+                            300: '#FDE08B',
+                            400: '#F6C358',
+                            500: '#D4AF37', // Luxury Gold
+                            600: '#B08D28',
+                        },
+                        mystic: '#7C3AED',
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
                     },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                        'glass': 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
-                    },
-                    animation: {
-                        'float': 'float 8s ease-in-out infinite',
-                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 30s linear infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        }
-                    }
                 }
             }
         }
@@ -54,281 +43,284 @@
     <style>
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #07090F; }
-        ::-webkit-scrollbar-thumb { background: #4B3268; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+        ::-webkit-scrollbar-track { background: #03050c; }
+        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FDE08B; }
 
-        /* Text Selection */
-        ::selection { background: #D4AF37; color: #07090F; }
+        /* Language Toggle Logic */
+        body.lang-el .lang-en { display: none !important; }
+        body.lang-en .lang-el { display: none !important; }
 
         /* Smooth Reveal Animations */
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 1.2s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
-        
-        /* Glassmorphism Classes */
+
+        /* Glassmorphism */
         .glass-card {
-            background: rgba(18, 21, 33, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            transition: all 0.5s ease;
+            background: rgba(10, 15, 37, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
         }
         .glass-card:hover {
-            border-color: rgba(212, 175, 55, 0.5);
-            box-shadow: 0 10px 40px -10px rgba(75, 50, 104, 0.4), inset 0 0 20px rgba(212, 175, 55, 0.05);
+            border-color: rgba(212, 175, 55, 0.4);
             transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.15), inset 0 0 20px rgba(212, 175, 55, 0.05);
         }
 
-        /* Ambient Glows */
-        .ambient-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            pointer-events: none;
+        /* Animated Starfield Background */
+        .starfield-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -10; background: #03050c; overflow: hidden;
+        }
+        
+        .stars, .stars2, .stars3 {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; height: 100%; display: block;
+        }
+
+        .stars { background: transparent url('https://raw.githubusercontent.com/frontend-joe/css-stars/master/stars.png') repeat top center; z-index: -3; animation: space-move 150s linear infinite; }
+        .stars2 { background: transparent url('https://raw.githubusercontent.com/frontend-joe/css-stars/master/stars.png') repeat top center; z-index: -2; animation: space-move 100s linear infinite; transform: scale(1.5); opacity: 0.6; }
+        .stars3 { background: transparent url('https://raw.githubusercontent.com/frontend-joe/css-stars/master/stars.png') repeat top center; z-index: -1; animation: space-move 50s linear infinite; transform: scale(2.5); opacity: 0.3; }
+
+        @keyframes space-move {
+            from { background-position: 0 0; }
+            to { background-position: 0 -10000px; }
+        }
+
+        /* Shooting Stars */
+        .shooting-star {
+            position: absolute; top: 50%; left: 50%; width: 4px; height: 4px;
+            background: #fff; border-radius: 50%; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1);
+            animation: shoot 3s linear infinite; opacity: 0;
+        }
+        .shooting-star::before {
+            content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 300px; height: 1px;
+            background: linear-gradient(90deg, #fff, transparent);
+        }
+        @keyframes shoot {
+            0% { transform: translate(-500px, -500px) rotate(45deg); opacity: 1; }
+            20% { opacity: 0; }
+            100% { transform: translate(1000px, 1000px) rotate(45deg); opacity: 0; }
+        }
+
+        /* Nebula Glows */
+        .nebula {
+            position: fixed; border-radius: 50%; filter: blur(120px); z-index: -5; pointer-events: none; opacity: 0.5;
         }
     </style>
 </head>
-<body class="bg-celestial-dark text-celestial-stardust font-sans antialiased overflow-x-hidden">
+<body class="text-gray-300 font-sans antialiased overflow-x-hidden lang-el selection:bg-gold-500 selection:text-space-900">
 
-    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <div class="ambient-orb w-[40vw] h-[40vw] bg-celestial-mystic/20 top-[-10%] left-[-10%] animate-pulse-slow"></div>
-        <div class="ambient-orb w-[30vw] h-[30vw] bg-celestial-gold/10 bottom-[10%] right-[-5%] animate-float" style="animation-delay: 2s;"></div>
-        <div class="ambient-orb w-[50vw] h-[50vw] bg-celestial-mystic/10 top-[40%] left-[30%] animate-pulse-slow" style="animation-delay: 4s;"></div>
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIj48Zz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIxIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjMiLz48Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjEuNSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC41Ii8+PGNpcmNsZSBjeD0iMzUwIiBjeT0iMzAwIiByPSIxIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjIiLz48Y2lyY2xlIGN4PSI4MCIgY3k9IjMzMCIgcj0iMiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC40Ii8+PC9nPjwvc3ZnPg==')] opacity-30 animate-spin-slow"></div>
+    <div class="starfield-container">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+        <div class="shooting-star" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+        <div class="shooting-star" style="top: 70%; left: 60%; animation-delay: 1.5s;"></div>
+        <div class="nebula w-[60vw] h-[60vw] bg-mystic/20 top-[-20%] left-[-20%] animate-pulse"></div>
+        <div class="nebula w-[50vw] h-[50vw] bg-gold-500/10 bottom-[-10%] right-[-10%]"></div>
     </div>
 
-    <nav class="fixed w-full z-50 transition-all duration-500 bg-celestial-dark/80 backdrop-blur-md border-b border-celestial-gold/10">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-            <div class="text-celestial-gold font-serif text-2xl tracking-widest font-bold">
-                ASTRA
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-space-900/50 backdrop-blur-md border-b border-white/5" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-gold-500 font-serif text-2xl tracking-widest font-bold flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-6 h-6"></i> ASTRA
             </div>
-            <div class="hidden md:flex space-x-8 text-sm font-medium tracking-widest uppercase text-celestial-goldlight/80">
-                <a href="#services" class="hover:text-celestial-gold transition-colors">Περιγραφές υπηρεσιών</a>
-                <a href="#about" class="hover:text-celestial-gold transition-colors">About</a>
-                <a href="#terms" class="hover:text-celestial-gold transition-colors">Όροι</a>
+            
+            <div class="flex items-center gap-8">
+                <div class="hidden md:flex space-x-8 text-sm font-medium tracking-widest uppercase text-gray-300">
+                    <a href="#services" class="hover:text-gold-400 transition-colors lang-el">Υπηρεσιες</a>
+                    <a href="#services" class="hover:text-gold-400 transition-colors lang-en">Services</a>
+                    
+                    <a href="#about" class="hover:text-gold-400 transition-colors lang-el">Σχετικα</a>
+                    <a href="#about" class="hover:text-gold-400 transition-colors lang-en">About</a>
+                    
+                    <a href="#terms" class="hover:text-gold-400 transition-colors lang-el">Οροι</a>
+                    <a href="#terms" class="hover:text-gold-400 transition-colors lang-en">Terms</a>
+                </div>
+
+                <button id="lang-btn" class="flex items-center gap-2 px-4 py-2 rounded-full border border-gold-500/30 text-gold-400 hover:bg-gold-500/10 transition-all group">
+                    <i data-lucide="globe" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500"></i>
+                    <span id="lang-indicator" class="font-bold text-sm tracking-widest">EN</span>
+                </button>
             </div>
-            <button class="md:hidden text-celestial-gold"><i data-lucide="menu" class="w-6 h-6"></i></button>
         </div>
     </nav>
 
     <header class="relative min-h-screen flex items-center justify-center pt-20 px-6">
         <div class="text-center z-10 max-w-4xl mx-auto reveal">
-            <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-celestial-gold/30 bg-celestial-gold/5 text-celestial-gold tracking-widest text-xs font-semibold uppercase mb-8">
-                <i data-lucide="sparkles" class="w-4 h-4"></i>
-                <span>Astrology & Self-Awareness</span>
-                <i data-lucide="sparkles" class="w-4 h-4"></i>
-            </div>
             <h1 class="text-5xl md:text-7xl font-serif text-white leading-tight mb-8">
-                Discover the <span class="text-transparent bg-clip-text bg-gradient-to-r from-celestial-gold to-celestial-goldlight italic">Blueprint</span> of Your Soul
+                <span class="lang-el">Ανακαλύψτε το Αποτύπωμα της <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-600">Ψυχής</span> σας</span>
+                <span class="lang-en">Discover the Blueprint of Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-600">Soul</span></span>
             </h1>
-            <p class="text-lg md:text-xl text-celestial-stardust font-light max-w-2xl mx-auto leading-relaxed">
-                Unlock the wisdom of the stars to guide your personal growth, relationships, and life's unique journey.
+            <p class="text-lg md:text-xl text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">
+                <span class="lang-el">Ξεκλειδώστε τη σοφία των άστρων. Μια βαθιά, εξατομικευμένη προσέγγιση για την προσωπική σας εξέλιξη, τις σχέσεις και την πορεία της ζωής σας.</span>
+                <span class="lang-en">Unlock the wisdom of the stars. A deep, personalized approach to your personal evolution, relationships, and life's unique journey.</span>
             </p>
-        </div>
-        
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 text-celestial-gold/50 animate-bounce">
-            <span class="text-xs tracking-widest uppercase">Explore</span>
-            <i data-lucide="chevron-down" class="w-5 h-5"></i>
+            <div class="mt-12">
+                <a href="#services" class="inline-flex items-center gap-2 px-8 py-4 bg-gold-500 text-space-900 rounded-full font-bold uppercase tracking-widest hover:bg-gold-400 transition-colors shadow-[0_0_30px_rgba(212,175,55,0.3)]">
+                    <span class="lang-el">Εξερευνηση</span>
+                    <span class="lang-en">Explore</span>
+                    <i data-lucide="arrow-down" class="w-5 h-5"></i>
+                </a>
+            </div>
         </div>
     </header>
 
     <section id="services" class="py-32 px-6 relative z-10">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-24 reveal">
-                <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">Περιγραφές υπηρεσιών</h2>
-                <div class="w-24 h-1 bg-celestial-gold mx-auto rounded-full opacity-50"></div>
+                <span class="text-gold-500 tracking-widest uppercase text-sm font-semibold">
+                    <span class="lang-el">Οι Υπηρεσιες μου</span>
+                    <span class="lang-en">My Services</span>
+                </span>
+                <h2 class="text-4xl md:text-5xl font-serif text-white mt-4 mb-6 lang-el">Περιγραφές υπηρεσιών</h2>
+                <h2 class="text-4xl md:text-5xl font-serif text-white mt-4 mb-6 lang-en">Service Descriptions</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto"></div>
             </div>
 
-            <div class="space-y-16">
+            <div class="grid lg:grid-cols-2 gap-8">
                 
-                <div class="glass-card rounded-[2rem] p-8 md:p-12 reveal">
-                    <div class="flex items-center gap-4 mb-8 border-b border-celestial-gold/20 pb-6">
-                        <i data-lucide="sun" class="w-8 h-8 text-celestial-gold"></i>
+                <div class="glass-card rounded-3xl p-8 md:p-10 reveal">
+                    <div class="w-14 h-14 rounded-full bg-gold-500/10 flex items-center justify-center mb-6 border border-gold-500/20">
+                        <i data-lucide="sun" class="w-7 h-7 text-gold-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif text-white mb-4 lang-el">Ανάλυση αστρολογικού χάρτη</h3>
+                    <h3 class="text-2xl font-serif text-white mb-4 lang-en">Natal Chart Analysis</h3>
+                    
+                    <div class="text-gray-400 font-light leading-relaxed text-justify lang-el">
+                        <p>Ο αστρολογικός χάρτης αποτελεί ένα μοναδικό αποτύπωμα της στιγμής της γέννησής σου, όπως ακριβώς και το δακτυλικό σου αποτύπωμα. Αποτυπώνει με ακρίβεια τη θέση των πλανητών και τις μεταξύ τους όψεις εκείνη τη συγκεκριμένη στιγμή, δημιουργώντας έναν πλήρη «χάρτη» της προσωπικότητάς σου. Μέσα από την ανάλυσή του αναδεικνύονται τα βασικά χαρακτηριστικά σου, οι εσωτερικές σου τάσεις, τα δυνατά σου σημεία αλλά και οι προκλήσεις που μπορεί να συναντήσεις στη ζωή σου, προσφέροντας μια βαθύτερη κατανόηση του εαυτού σου και της πορείας σου.</p>
+                    </div>
+                    
+                    <div class="text-gray-400 font-light leading-relaxed text-justify lang-en">
+                        <p>The natal chart is a unique imprint of the exact moment you were born, much like a fingerprint that belongs only to you. It precisely maps the positions of the planets and the aspects formed between them at that specific time, creating a complete “blueprint” of your personality. Through its analysis, your core traits, inner tendencies, strengths, and potential challenges are revealed, offering a deeper understanding of who you are and the path you are likely to follow in life.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-3xl p-8 md:p-10 reveal delay-100">
+                    <div class="w-14 h-14 rounded-full bg-gold-500/10 flex items-center justify-center mb-6 border border-gold-500/20">
+                        <i data-lucide="users" class="w-7 h-7 text-gold-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif text-white mb-4 lang-el">Ανάλυση Συναστρίας</h3>
+                    <h3 class="text-2xl font-serif text-white mb-4 lang-en">Relationship Synastry Analysis</h3>
+                    
+                    <div class="space-y-4 text-gray-400 font-light leading-relaxed text-justify lang-el">
+                        <p>Η συναστρία αποτελεί τη μελέτη της δυναμικής ανάμεσα σε δύο ανθρώπους, ανεξάρτητα από το είδος της σχέσης — ερωτική, φιλική, οικογενειακή ή επαγγελματική. Μέσα από τη σύγκριση των αστρολογικών χαρτών, αναδεικνύονται τα σημεία σύνδεσης, οι προκλήσεις και οι τομείς που χρειάζονται εξέλιξη και συνειδητή δουλειά.</p>
+                        <p>Καμία σχέση δεν είναι τυχαία. Οι άνθρωποι που έρχονται στη ζωή μας λειτουργούν ως καθρέφτες και δάσκαλοι, προσφέροντας εμπειρίες και μαθήματα που συμβάλλουν στην προσωπική μας εξέλιξη. Μέσα από την ανάλυση της συναστρίας μπορούμε να κατανοήσουμε βαθύτερα τον ρόλο που παίζει ο άλλος στη ζωή μας, το είδος των μαθημάτων που καλούμαστε να δώσουμε αλλά και εκείνα που ερχόμαστε να λάβουμε. Έτσι, αποκτούμε μεγαλύτερη επίγνωση των σχέσεών μας και της σημασίας τους στην προσωπική μας πορεία.</p>
+                    </div>
+
+                    <div class="space-y-4 text-gray-400 font-light leading-relaxed text-justify lang-en">
+                        <p>Synastry is the study of the dynamic between two individuals, regardless of the type of relationship — romantic, friendly, family, or professional. By comparing two natal charts, we gain insight into points of connection, potential challenges, and the areas that may require growth and conscious effort.</p>
+                        <p>No relationship is accidental. The people who enter our lives act as mirrors and teachers, offering experiences and lessons that support our personal evolution. Through synastry analysis, we can better understand the role others play in our lives, the lessons we are here to give, and those we are meant to receive. In this way, we develop a deeper awareness of our relationships and their significance in shaping our life path.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-3xl p-8 md:p-10 reveal lg:col-span-2">
+                    <div class="w-14 h-14 rounded-full bg-gold-500/10 flex items-center justify-center mb-6 border border-gold-500/20">
+                        <i data-lucide="clock" class="w-7 h-7 text-gold-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif text-white mb-4 lang-el">Ωριαία Αστρολογία</h3>
+                    <h3 class="text-2xl font-serif text-white mb-4 lang-en">Horary Astrology</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 text-gray-400 font-light leading-relaxed text-justify lang-el">
+                        <div class="space-y-4">
+                            <p>Η Ωριαία Αστρολογία είναι μια από τις πιο άμεσες και εντυπωσιακά ακριβείς μεθόδους αστρολογικής καθοδήγησης. Βασίζεται στη στιγμή που τίθεται μια ερώτηση και προσφέρει ξεκάθαρες απαντήσεις σε θέματα που σε απασχολούν εδώ και τώρα.</p>
+                            <p>Αν βρίσκεσαι σε δίλημμα, χρειάζεται να πάρεις μια σημαντική απόφαση ή αναζητάς μια συγκεκριμένη πληροφορία, η ωριαία αστρολογία μπορεί να σου δώσει κατεύθυνση με σαφήνεια και ακρίβεια. Είτε πρόκειται για προσωπικά, επαγγελματικά ή πρακτικά ζητήματα, η ανάλυση επικεντρώνεται αποκλειστικά στην ερώτησή σου και στις ενέργειες που τη συνοδεύουν.</p>
+                        </div>
                         <div>
-                            <h3 class="text-2xl font-serif text-white mb-1">Ανάλυση αστρολογικού χάρτη</h3>
-                            <h4 class="text-celestial-goldlight/80 font-serif italic text-lg">Natal Chart Analysis</h4>
+                            <p class="text-white font-medium mb-4">Η ωριαία αστρολογία μπορεί να δώσει:</p>
+                            <ul class="space-y-2 mb-4">
+                                <li class="flex items-start gap-2"><i data-lucide="star" class="w-4 h-4 text-gold-500 shrink-0 mt-1"></i> Άμεση και στοχευμένη απάντηση στο ερώτημά σου</li>
+                                <li class="flex items-start gap-2"><i data-lucide="star" class="w-4 h-4 text-gold-500 shrink-0 mt-1"></i> Καθοδήγηση για λήψη αποφάσεων</li>
+                                <li class="flex items-start gap-2"><i data-lucide="star" class="w-4 h-4 text-gold-500 shrink-0 mt-1"></i> Ανάλυση της εξέλιξης μιας κατάστασης</li>
+                                <li class="flex items-start gap-2"><i data-lucide="star" class="w-4 h-4 text-gold-500 shrink-0 mt-1"></i> Βοήθεια στην κατανόηση των επιλογών σου</li>
+                            </ul>
+                            <p>Η δύναμη της ωριαίας αστρολογίας βρίσκεται στη σωστή διατύπωση της ερώτησης. Όσο πιο ξεκάθαρη και συγκεκριμένη είναι, τόσο πιο ακριβής και ουσιαστική θα είναι και η απάντηση που θα λάβεις.</p>
                         </div>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-10">
-                        <div>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Ο αστρολογικός χάρτης αποτελεί ένα μοναδικό αποτύπωμα της στιγμής της γέννησής σου, όπως ακριβώς και το δακτυλικό σου αποτύπωμα. Αποτυπώνει με ακρίβεια τη θέση των πλανητών και τις μεταξύ τους όψεις εκείνη τη συγκεκριμένη στιγμή, δημιουργώντας έναν πλήρη «χάρτη» της προσωπικότητάς σου. Μέσα από την ανάλυσή του αναδεικνύονται τα βασικά χαρακτηριστικά σου, οι εσωτερικές σου τάσεις, τα δυνατά σου σημεία αλλά και οι προκλήσεις που μπορεί να συναντήσεις στη ζωή σου, προσφέροντας μια βαθύτερη κατανόηση του εαυτού σου και της πορείας σου.
-                            </p>
+
+                    <div class="grid md:grid-cols-2 gap-8 text-gray-400 font-light leading-relaxed text-justify lang-en">
+                        <div class="space-y-4">
+                            <p>Horary Astrology is one of the most immediate and impressively precise methods of astrological guidance. It is based on the exact moment a question is asked and provides clear, direct answers to the issues that concern you in the present moment.</p>
+                            <p>If you find yourself at a crossroads, need to make an important decision, or are seeking specific information, horary astrology can offer clarity and direction with accuracy. Whether your question relates to personal, professional, or practical matters, the analysis focuses entirely on your question and the energies surrounding it.</p>
                         </div>
                         <div>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                The natal chart is a unique imprint of the exact moment you were born, much like a fingerprint that belongs only to you. It precisely maps the positions of the planets and the aspects formed between them at that specific time, creating a complete “blueprint” of your personality. Through its analysis, your core traits, inner tendencies, strengths, and potential challenges are revealed, offering a deeper understanding of who you are and the path you are likely to follow in life.
-                            </p>
+                            <p class="text-white font-medium mb-4">Horary astrology can provide:</p>
+                            <ul class="space-y-2 mb-4">
+                                <li class="flex items-start gap-2"><i data-lucide="star" class="w-4 h-4 text-gold-500 shrink-0 mt-1"></i> Immediate and focused answers to your question</li>
+                                <li class="flex items-start gap-2"><i data-lucide="star" class="w-4 h-4 text-gold-500 shrink-0 mt-1"></i> Guidance for decision-making</li>
+                                <li class="flex items-start gap-2"><i data-lucide="star" class="w-4 h-4 text-gold-500 shrink-0 mt-1"></i> Insight into how a situation may unfold</li>
+                                <li class="flex items-start gap-2"><i data-lucide="star" class="w-4 h-4 text-gold-500 shrink-0 mt-1"></i> Support in understanding your available choices</li>
+                            </ul>
+                            <p>The power of horary astrology lies in the way the question is asked. The clearer and more specific your question is, the more accurate and meaningful the answer will be.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="glass-card rounded-[2rem] p-8 md:p-12 reveal delay-100">
-                    <div class="flex items-center gap-4 mb-8 border-b border-celestial-gold/20 pb-6">
-                        <i data-lucide="users" class="w-8 h-8 text-celestial-gold"></i>
-                        <div>
-                            <h3 class="text-2xl font-serif text-white mb-1">Ανάλυση Συναστρίας</h3>
-                            <h4 class="text-celestial-goldlight/80 font-serif italic text-lg">Relationship Synastry Analysis</h4>
-                        </div>
+                <div class="glass-card rounded-3xl p-8 md:p-10 reveal">
+                    <div class="w-14 h-14 rounded-full bg-gold-500/10 flex items-center justify-center mb-6 border border-gold-500/20">
+                        <i data-lucide="compass" class="w-7 h-7 text-gold-400"></i>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-10">
-                        <div class="space-y-4">
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Η συναστρία αποτελεί τη μελέτη της δυναμικής ανάμεσα σε δύο ανθρώπους, ανεξάρτητα από το είδος της σχέσης — ερωτική, φιλική, οικογενειακή ή επαγγελματική. Μέσα από τη σύγκριση των αστρολογικών χαρτών, αναδεικνύονται τα σημεία σύνδεσης, οι προκλήσεις και οι τομείς που χρειάζονται εξέλιξη και συνειδητή δουλειά.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Καμία σχέση δεν είναι τυχαία. Οι άνθρωποι που έρχονται στη ζωή μας λειτουργούν ως καθρέφτες και δάσκαλοι, προσφέροντας εμπειρίες και μαθήματα που συμβάλλουν στην προσωπική μας εξέλιξη. Μέσα από την ανάλυση της συναστρίας μπορούμε να κατανοήσουμε βαθύτερα τον ρόλο που παίζει ο άλλος στη ζωή μας, το είδος των μαθημάτων που καλούμαστε να δώσουμε αλλά και εκείνα που ερχόμαστε να λάβουμε. Έτσι, αποκτούμε μεγαλύτερη επίγνωση των σχέσεών μας και της σημασίας τους στην προσωπική μας πορεία.
-                            </p>
-                        </div>
-                        <div class="space-y-4">
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Synastry is the study of the dynamic between two individuals, regardless of the type of relationship — romantic, friendly, family, or professional. By comparing two natal charts, we gain insight into points of connection, potential challenges, and the areas that may require growth and conscious effort.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                No relationship is accidental. The people who enter our lives act as mirrors and teachers, offering experiences and lessons that support our personal evolution. Through synastry analysis, we can better understand the role others play in our lives, the lessons we are here to give, and those we are meant to receive. In this way, we develop a deeper awareness of our relationships and their significance in shaping our life path.
-                            </p>
-                        </div>
+                    <h3 class="text-2xl font-serif text-white mb-4 lang-el">Διόρθωση / Εξακρίβωση Ώρας Γέννησης</h3>
+                    <h3 class="text-2xl font-serif text-white mb-4 lang-en">Birth Time Rectification</h3>
+                    
+                    <div class="space-y-4 text-gray-400 font-light leading-relaxed text-justify lang-el">
+                        <p>Για να είναι μια αστρολογική ανάλυση ή πρόβλεψη πραγματικά ακριβής, είναι απαραίτητο να εξακριβωθεί η σωστή ώρα γέννησης. Ακόμη και μικρές αποκλίσεις μπορούν να επηρεάσουν σημαντικά την ερμηνεία του αστρολογικού χάρτη και τα αποτελέσματα της ανάλυσης.</p>
+                        <p>Αν δεν είσαι σίγουρος/η για την ώρα γέννησής σου, υπάρχει τρόπος να την προσδιορίσουμε βασιζόμενοι σε σημαντικά γεγονότα της ζωής σου.</p>
+                        <p>Επιλέγοντας αυτή την υπηρεσία, θα λάβεις ένα email με μια ειδικά διαμορφωμένη φόρμα, την οποία θα χρειαστεί να συμπληρώσεις με:</p>
+                        <ul class="space-y-2 pl-4 border-l-2 border-gold-500/30">
+                            <li>Απαντήσεις σε συγκεκριμένες ερωτήσεις</li>
+                            <li>Ημερομηνίες και χρονικές περιόδους σημαντικών γεγονότων της ζωής σου</li>
+                        </ul>
+                        <p>Μέσα από την ανάλυση αυτών των πληροφοριών, γίνεται η αντιστοίχιση των πλανητικών επιρροών με πραγματικά γεγονότα, οδηγώντας σε μια πιο ακριβή και αξιόπιστη προσέγγιση της ώρας γέννησής σου.</p>
+                    </div>
+
+                    <div class="space-y-4 text-gray-400 font-light leading-relaxed text-justify lang-en">
+                        <p>For an astrological analysis or prediction to be truly accurate, it is essential to determine the correct birth time. Even small deviations can significantly affect the interpretation of the natal chart and the overall results of the analysis.</p>
+                        <p>If you are not certain about your exact time of birth, there is a reliable method to identify it by working with key events from your life.</p>
+                        <p>By choosing this service, you will receive an email with a specially designed form, which you will need to complete by providing:</p>
+                        <ul class="space-y-2 pl-4 border-l-2 border-gold-500/30">
+                            <li>Answers to specific questions</li>
+                            <li>Dates and time periods of important life events</li>
+                        </ul>
+                        <p>Through the analysis of this information, planetary influences are correlated with real-life events, leading to a more precise and reliable estimation of your birth time.</p>
                     </div>
                 </div>
 
-                <div class="glass-card rounded-[2rem] p-8 md:p-12 reveal">
-                    <div class="flex items-center gap-4 mb-8 border-b border-celestial-gold/20 pb-6">
-                        <i data-lucide="clock" class="w-8 h-8 text-celestial-gold"></i>
-                        <div>
-                            <h3 class="text-2xl font-serif text-white mb-1">Ωριαία Αστρολογία</h3>
-                            <h4 class="text-celestial-goldlight/80 font-serif italic text-lg">Horary Astrology</h4>
-                        </div>
+                <div class="glass-card rounded-3xl p-8 md:p-10 reveal delay-100">
+                    <div class="w-14 h-14 rounded-full bg-gold-500/10 flex items-center justify-center mb-6 border border-gold-500/20">
+                        <i data-lucide="map" class="w-7 h-7 text-gold-400"></i>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-10">
-                        <div class="space-y-4">
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Η Ωριαία Αστρολογία είναι μια από τις πιο άμεσες και εντυπωσιακά ακριβείς μεθόδους αστρολογικής καθοδήγησης. Βασίζεται στη στιγμή που τίθεται μια ερώτηση και προσφέρει ξεκάθαρες απαντήσεις σε θέματα που σε απασχολούν εδώ και τώρα.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Αν βρίσκεσαι σε δίλημμα, χρειάζεται να πάρεις μια σημαντική απόφαση ή αναζητάς μια συγκεκριμένη πληροφορία, η ωριαία αστρολογία μπορεί να σου δώσει κατεύθυνση με σαφήνεια και ακρίβεια. Είτε πρόκειται για προσωπικά, επαγγελματικά ή πρακτικά ζητήματα, η ανάλυση επικεντρώνεται αποκλειστικά στην ερώτησή σου και στις ενέργειες που τη συνοδεύουν.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust mt-6">Η ωριαία αστρολογία μπορεί να δώσει</p>
-                            <ul class="list-disc pl-5 space-y-2 text-celestial-stardust font-light text-justify">
-                                <li>Άμεση και στοχευμένη απάντηση στο ερώτημά σου</li>
-                                <li>Καθοδήγηση για λήψη αποφάσεων</li>
-                                <li>Ανάλυση της εξέλιξης μιας κατάστασης</li>
-                                <li>Βοήθεια στην κατανόηση των επιλογών σου</li>
-                            </ul>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify mt-4">
-                                Η δύναμη της ωριαίας αστρολογίας βρίσκεται στη σωστή διατύπωση της ερώτησης. Όσο πιο ξεκάθαρη και συγκεκριμένη είναι, τόσο πιο ακριβής και ουσιαστική θα είναι και η απάντηση που θα λάβεις.
-                            </p>
-                        </div>
-                        <div class="space-y-4">
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Horary Astrology is one of the most immediate and impressively precise methods of astrological guidance. It is based on the exact moment a question is asked and provides clear, direct answers to the issues that concern you in the present moment.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                If you find yourself at a crossroads, need to make an important decision, or are seeking specific information, horary astrology can offer clarity and direction with accuracy. Whether your question relates to personal, professional, or practical matters, the analysis focuses entirely on your question and the energies surrounding it.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust mt-6">Horary astrology can provide:</p>
-                            <ul class="list-disc pl-5 space-y-2 text-celestial-stardust font-light text-justify">
-                                <li>Immediate and focused answers to your question</li>
-                                <li>Guidance for decision-making</li>
-                                <li>Insight into how a situation may unfold</li>
-                                <li>Support in understanding your available choices</li>
-                            </ul>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify mt-4">
-                                The power of horary astrology lies in the way the question is asked. The clearer and more specific your question is, the more accurate and meaningful the answer will be.
-                            </p>
-                        </div>
+                    <h3 class="text-2xl font-serif text-white mb-4 lang-el">Ετήσια πρόβλεψη</h3>
+                    <h3 class="text-2xl font-serif text-white mb-4 lang-en">The Yearly Predictions Reading</h3>
+                    
+                    <div class="space-y-4 text-gray-400 font-light leading-relaxed text-justify lang-el">
+                        <p>Η Ετήσια Πρόβλεψη είναι μια ολοκληρωμένη, εξατομικευμένη ανάλυση που χαρτογραφεί τις ενέργειες, τις ευκαιρίες και τις προκλήσεις που σε περιμένουν τους επόμενους μήνες, χρησιμοποιώντας έναν συνδυασμό προβλεπτικών τεχνικών της αστρολογίας. Είναι ένας λεπτομερής, προσωπικός «χάρτης πορείας», βασισμένος αποκλειστικά στον δικό σου αστρολογικό χάρτη.</p>
+                        <p class="text-white font-medium">Οι μέθοδοι που χρησιμοποιώ:</p>
+                        <ul class="space-y-3">
+                            <li><strong class="text-gold-400 font-medium">Διελεύσεις</strong> — Η τρέχουσα κίνηση των πλανητών μέσα από τον γενέθλιο χάρτη σου, αποκαλύπτοντας πότε ενεργοποιούνται σημαντικά θέματα στη ζωή σου: επαγγελματικές αλλαγές, καμπές στις σχέσεις, οικονομικές ευκαιρίες, στιγμές μεταμόρφωσης.</li>
+                            <li><strong class="text-gold-400 font-medium">Δευτερεύουσες Προόδοι</strong> — Ο χάρτης σου όπως εξελίσσεται μέρα με τη μέρα μετά τη γέννησή σου, αντικατοπτρίζοντας την εσωτερική σου ανάπτυξη και τις βαθιές, αργές αλλαγές που συντελούνται μέσα σου. Δείχνουν προς ποια κατεύθυνση εξελίσσεται η ψυχή σου.</li>
+                            <li><strong class="text-gold-400 font-medium">Ηλιακά Τόξα (Solar Arc Directions)</strong> — Ένα από τα πιο ακριβή και ισχυρά εργαλεία πρόβλεψης. Κάθε πλανήτης στον χάρτη σου προχωρά κατά μία μοίρα ανά έτος, ενεργοποιώντας σημαντικά γεγονότα ζωής.</li>
+                            <li><strong class="text-gold-400 font-medium">Χάρτης Ηλιακής Επιστροφής</strong> — Ένας νέος χάρτης που δημιουργείται τη στιγμή που ο Ήλιος επιστρέφει στην αρχική του θέση την ημέρα των γενεθλίων σου — το προσωπικό σου «νέο έτος» και μια προεπισκόπηση των επόμενων δώδεκα μηνών.</li>
+                        </ul>
+                        <p>Όλες αυτές οι τεχνικές μαζί δημιουργούν μια πλήρη και πολυεπίπεδη εικόνα της χρονιάς σου.</p>
                     </div>
-                </div>
 
-                <div class="glass-card rounded-[2rem] p-8 md:p-12 reveal delay-100">
-                    <div class="flex items-center gap-4 mb-8 border-b border-celestial-gold/20 pb-6">
-                        <i data-lucide="compass" class="w-8 h-8 text-celestial-gold"></i>
-                        <div>
-                            <h3 class="text-2xl font-serif text-white mb-1">Διόρθωση / Εξακρίβωση Ώρας Γέννησης</h3>
-                            <h4 class="text-celestial-goldlight/80 font-serif italic text-lg">Birth Time Rectification</h4>
-                        </div>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-10">
-                        <div class="space-y-4">
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Για να είναι μια αστρολογική ανάλυση ή πρόβλεψη πραγματικά ακριβής, είναι απαραίτητο να εξακριβωθεί η σωστή ώρα γέννησης. Ακόμη και μικρές αποκλίσεις μπορούν να επηρεάσουν σημαντικά την ερμηνεία του αστρολογικού χάρτη και τα αποτελέσματα της ανάλυσης.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Αν δεν είσαι σίγουρος/η για την ώρα γέννησής σου, υπάρχει τρόπος να την προσδιορίσουμε βασιζόμενοι σε σημαντικά γεγονότα της ζωής σου.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Επιλέγοντας αυτή την υπηρεσία, θα λάβεις ένα email με μια ειδικά διαμορφωμένη φόρμα, την οποία θα χρειαστεί να συμπληρώσεις με:
-                            </p>
-                            <ul class="list-disc pl-5 space-y-2 text-celestial-stardust font-light text-justify">
-                                <li>Απαντήσεις σε συγκεκριμένες ερωτήσεις</li>
-                                <li>Ημερομηνίες και χρονικές περιόδους σημαντικών γεγονότων της ζωής σου</li>
-                            </ul>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify mt-4">
-                                Μέσα από την ανάλυση αυτών των πληροφοριών, γίνεται η αντιστοίχιση των πλανητικών επιρροών με πραγματικά γεγονότα, οδηγώντας σε μια πιο ακριβή και αξιόπιστη προσέγγιση της ώρας γέννησής σου.
-                            </p>
-                        </div>
-                        <div class="space-y-4">
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                For an astrological analysis or prediction to be truly accurate, it is essential to determine the correct birth time. Even small deviations can significantly affect the interpretation of the natal chart and the overall results of the analysis.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                If you are not certain about your exact time of birth, there is a reliable method to identify it by working with key events from your life.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                By choosing this service, you will receive an email with a specially designed form, which you will need to complete by providing:
-                            </p>
-                            <ul class="list-disc pl-5 space-y-2 text-celestial-stardust font-light text-justify">
-                                <li>Answers to specific questions</li>
-                                <li>Dates and time periods of important life events</li>
-                            </ul>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify mt-4">
-                                Through the analysis of this information, planetary influences are correlated with real-life events, leading to a more precise and reliable estimation of your birth time.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card rounded-[2rem] p-8 md:p-12 reveal">
-                    <div class="flex items-center gap-4 mb-8 border-b border-celestial-gold/20 pb-6">
-                        <i data-lucide="map" class="w-8 h-8 text-celestial-gold"></i>
-                        <div>
-                            <h3 class="text-2xl font-serif text-white mb-1">Ετήσια πρόβλεψη</h3>
-                            <h4 class="text-celestial-goldlight/80 font-serif italic text-lg">The Yearly Predictions Reading</h4>
-                        </div>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-10">
-                        <div class="space-y-4">
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                Η Ετήσια Πρόβλεψη είναι μια ολοκληρωμένη, εξατομικευμένη ανάλυση που χαρτογραφεί τις ενέργειες, τις ευκαιρίες και τις προκλήσεις που σε περιμένουν τους επόμενους μήνες, χρησιμοποιώντας έναν συνδυασμό προβλεπτικών τεχνικών της αστρολογίας. Είναι ένας λεπτομερής, προσωπικός «χάρτης πορείας», βασισμένος αποκλειστικά στον δικό σου αστρολογικό χάρτη.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust mt-6">Οι μέθοδοι που χρησιμοποιώ:</p>
-                            <ul class="space-y-4 text-celestial-stardust font-light text-justify mt-4">
-                                <li><strong class="text-celestial-goldlight font-medium">Διελεύσεις</strong> — Η τρέχουσα κίνηση των πλανητών μέσα από τον γενέθλιο χάρτη σου, αποκαλύπτοντας πότε ενεργοποιούνται σημαντικά θέματα στη ζωή σου: επαγγελματικές αλλαγές, καμπές στις σχέσεις, οικονομικές ευκαιρίες, στιγμές μεταμόρφωσης.</li>
-                                <li><strong class="text-celestial-goldlight font-medium">Δευτερεύουσες Προόδοι</strong> — Ο χάρτης σου όπως εξελίσσεται μέρα με τη μέρα μετά τη γέννησή σου, αντικατοπτρίζοντας την εσωτερική σου ανάπτυξη και τις βαθιές, αργές αλλαγές που συντελούνται μέσα σου. Δείχνουν προς ποια κατεύθυνση εξελίσσεται η ψυχή σου.</li>
-                                <li><strong class="text-celestial-goldlight font-medium">Ηλιακά Τόξα (Solar Arc Directions)</strong> — Ένα από τα πιο ακριβή και ισχυρά εργαλεία πρόβλεψης. Κάθε πλανήτης στον χάρτη σου προχωρά κατά μία μοίρα ανά έτος, ενεργοποιώντας σημαντικά γεγονότα ζωής.</li>
-                                <li><strong class="text-celestial-goldlight font-medium">Χάρτης Ηλιακής Επιστροφής</strong> — Ένας νέος χάρτης που δημιουργείται τη στιγμή που ο Ήλιος επιστρέφει στην αρχική του θέση την ημέρα των γενεθλίων σου — το προσωπικό σου «νέο έτος» και μια προεπισκόπηση των επόμενων δώδεκα μηνών.</li>
-                            </ul>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify mt-6">
-                                Όλες αυτές οι τεχνικές μαζί δημιουργούν μια πλήρη και πολυεπίπεδη εικόνα της χρονιάς σου.
-                            </p>
-                        </div>
-                        <div class="space-y-4">
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify">
-                                The Yearly Predictions Reading is a comprehensive, personalized analysis that maps out the energies, opportunities, and challenges awaiting you in the months ahead, using a combination of powerful astrological forecasting techniques. It is a detailed, personal “roadmap” based entirely on your unique natal chart.
-                            </p>
-                            <p class="leading-relaxed font-light text-celestial-stardust mt-6">The methods I use:</p>
-                            <ul class="space-y-4 text-celestial-stardust font-light text-justify mt-4">
-                                <li><strong class="text-celestial-goldlight font-medium">Transits</strong> — The current movement of the planets through your natal chart, revealing when key themes are activated in your life: career changes, relationship turning points, financial opportunities, and moments of transformation.</li>
-                                <li><strong class="text-celestial-goldlight font-medium">Secondary Progressions</strong> — Your chart as it evolves day by day after your birth, reflecting your inner growth and the deep, gradual changes unfolding within you. They show the direction your soul is moving toward.</li>
-                                <li><strong class="text-celestial-goldlight font-medium">Solar Arc Directions</strong> — One of the most precise and powerful forecasting tools. Each planet in your chart moves forward by one degree per year, activating significant life events.</li>
-                                <li><strong class="text-celestial-goldlight font-medium">Solar Return Chart</strong> — A new chart created at the exact moment the Sun returns to its natal position on your birthday — your personal “new year” and a preview of the twelve months ahead.</li>
-                            </ul>
-                            <p class="leading-relaxed font-light text-celestial-stardust text-justify mt-6">
-                                Together, these techniques create a complete and multi-layered picture of your year.
-                            </p>
-                        </div>
+                    <div class="space-y-4 text-gray-400 font-light leading-relaxed text-justify lang-en">
+                        <p>The Yearly Predictions Reading is a comprehensive, personalized analysis that maps out the energies, opportunities, and challenges awaiting you in the months ahead, using a combination of powerful astrological forecasting techniques. It is a detailed, personal “roadmap” based entirely on your unique natal chart.</p>
+                        <p class="text-white font-medium">The methods I use:</p>
+                        <ul class="space-y-3">
+                            <li><strong class="text-gold-400 font-medium">Transits</strong> — The current movement of the planets through your natal chart, revealing when key themes are activated in your life: career changes, relationship turning points, financial opportunities, and moments of transformation.</li>
+                            <li><strong class="text-gold-400 font-medium">Secondary Progressions</strong> — Your chart as it evolves day by day after your birth, reflecting your inner growth and the deep, gradual changes unfolding within you. They show the direction your soul is moving toward.</li>
+                            <li><strong class="text-gold-400 font-medium">Solar Arc Directions</strong> — One of the most precise and powerful forecasting tools. Each planet in your chart moves forward by one degree per year, activating significant life events.</li>
+                            <li><strong class="text-gold-400 font-medium">Solar Return Chart</strong> — A new chart created at the exact moment the Sun returns to its natal position on your birthday — your personal “new year” and a preview of the twelve months ahead.</li>
+                        </ul>
+                        <p>Together, these techniques create a complete and multi-layered picture of your year.</p>
                     </div>
                 </div>
 
@@ -336,113 +328,121 @@
         </div>
     </section>
 
-    <section id="about" class="py-32 px-6 bg-celestial-card/30 border-y border-celestial-gold/5 relative z-10">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-20 reveal">
-                <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">About</h2>
-                <div class="w-24 h-1 bg-celestial-gold mx-auto rounded-full opacity-50"></div>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-16">
-                <div class="space-y-6 reveal">
-                    <h3 class="text-2xl font-serif text-celestial-goldlight mb-8 pb-4 border-b border-celestial-gold/10">Η Πορεία Μου</h3>
-                    <div class="space-y-4 text-celestial-stardust font-light text-justify leading-relaxed">
-                        <p>Η σχέση μου με την αστρολογία ξεκίνησε το 2015, όπου είχα την τύχη να γνωρίσω μια αστρολόγο που μου έμαθε τα πρώτα βήματα στην ανάγνωση γενέθλιων χαρτών. Από εκείνη τη στιγμή άρχισε ένα βαθύ και συνεχές ταξίδι μελέτης και ανακάλυψης. Μέσα από βιβλία, πρακτική και προσωπική έρευνα, άρχισα να κατανοώ σταδιακά τον πολυδιάστατο και ανεξάντλητο κόσμο της αστρολογίας.</p>
-                        
-                        <p>Ανάμεσα στα βιβλία που με επηρέασαν περισσότερο είναι τα Rising Sign της Jeanne Avery, Saturn: A New Look at an Old Devil της Liz Greene, Cosmos and Psyche του Chris Brennan καθώς και το Aspects in Astrology της Sue Tompkins.</p>
-                        
-                        <p>Στην πορεία θέλησα να συνδυάσω την αστρολογία με την πνευματικότητα. Έτσι ασχολήθηκα με το Usui Reiki, αποκτώντας τον δεύτερο βαθμό. Μέσα από τις συνεδρίες Reiki χρησιμοποιούσα τον αστρολογικό χάρτη ως εργαλείο εστίασης και βαθύτερης κατανόησης των ενεργειακών και ψυχολογικών αναγκών του κάθε ατόμου.</p>
-                        
-                        <p>Το 2021 αποφάσισα να εμβαθύνω ακόμη περισσότερο, φοιτώντας στην αστρολογική σχολή Εναλλακτική Παιδεία. Εκεί εκπαιδεύτηκα σε προβλεπτικά συστήματα, συναστρίες, πολιτική και ιατρική αστρολογία, αστροχαρτογεωγραφία και καρμική αστρολογία, έχοντας την τύχη να διδαχθώ από εξαιρετικούς εισηγητές, όπως η Βάσια Κόντη, η Βάσια Μαυράκη, ο Δημήτρης Κορωνάκης, η Λίλη Λαλεχού και η Νόνα Βουδούρη. Παράλληλα, είχα την ευκαιρία να παρακολουθήσω σεμινάρια με σημαντικούς αστρολόγους, εμπλουτίζοντας περαιτέρω την οπτική και τη γνώση μου.</p>
-                        
-                        <p>Μετά την αποφοίτησή μου, ξεκίνησα να αναλύω επαγγελματικά αστρολογικούς χάρτες, δημιουργώντας πλήρεις και αναλυτικές γραπτές ερμηνείες για εκατοντάδες ανθρώπους. Η προσέγγισή μου δεν περιορίζεται στην πρόβλεψη, αλλά εστιάζει κυρίως στην αυτογνωσία και την προσωπική εξέλιξη.</p>
-                        
-                        <p>Η μελέτη μου συνεχίστηκε με εξειδίκευση στην εξακρίβωση ώρας γέννησης (rectification), μέσα από την καθοδήγηση του Robert Glasscock, με στόχο την αύξηση της ακρίβειας στις προβλέψεις. Στη συνέχεια ακολούθησα το αρχικό μου πάθος, την ωριαία αστρολογία, παρακολουθώντας μαθήματα της Deborah Houlding και εφαρμόζοντας την πρακτικά. Σήμερα, η ωριαία αστρολογία αποτελεί βασικό κομμάτι των υπηρεσιών μου, καθώς προσφέρει εντυπωσιακή ακρίβεια σε συγκεκριμένα ερωτήματα.</p>
-                        
-                        <p>Παράλληλα, το 2023 ξεκίνησα τις σπουδές μου στο Ελληνικό Ανοικτό Πανεπιστήμιο στο πρόγραμμα «Ευρωπαϊκές Σπουδές: Ιστορία, Κοινωνία, Πολιτισμός», με στόχο να συνδέσω την αστρολογία με την ιστορική και ερευνητική μελέτη, εξετάζοντας πλανητικούς κύκλους και ιστορικά γεγονότα.</p>
-                        
-                        <p>Κατά τη διάρκεια των σπουδών μου, έζησα για δύο χρόνια στην Τενερίφη μέσω προγράμματος Erasmus. Εκεί είχα την ευκαιρία να γνωρίσω ανθρώπους από διαφορετικά πολιτισμικά υπόβαθρα και να εμβαθύνω στην αστροχαρτογεωγραφία, παρατηρώντας στην πράξη πώς οι τόποι επηρεάζουν την εμπειρία και την πορεία του κάθε ανθρώπου.</p>
-                        
-                        <p>Παράλληλα με την αστρολογία, έχω ασχοληθεί με τη δημιουργική γραφή, παρακολουθώντας σχετικά σεμινάρια και ενσωματώνοντας τη γραφή ως εργαλείο έκφρασης και θεραπείας.</p>
-                        
-                        <p>Η φιλοσοφία μου βασίζεται στην ιδέα ότι η αστρολογία δεν καθορίζει, αλλά καθοδηγεί. Είναι ένα εργαλείο αυτογνωσίας που μας βοηθά να κατανοήσουμε τις τάσεις, να προετοιμαστούμε και να πάρουμε πιο συνειδητές αποφάσεις.</p>
-                        
-                        <p>Πιστεύω πως ο καθένας από εμάς έχει τη δύναμη να διαμορφώσει τη ζωή του. Η αστρολογία λειτουργεί ως μία γλώσσα που όσο περισσότερο τη μαθαίνουμε, τόσο βαθύτερα κατανοούμε τον εαυτό μας και τον κόσμο γύρω μας.</p>
-                    </div>
-                </div>
-
-                <div class="space-y-6 reveal delay-100">
-                    <h3 class="text-2xl font-serif text-celestial-goldlight mb-8 pb-4 border-b border-celestial-gold/10">My Journey</h3>
-                    <div class="space-y-4 text-celestial-stardust font-light text-justify leading-relaxed">
-                        <p>My journey with astrology began in 2015, when an astrologer crossed my path and introduced me to the fundamentals of reading natal charts. From that moment, a deep and ongoing path of study and discovery unfolded. Through books, practice, and personal research, I gradually began to understand the multidimensional and ever-expanding world of astrology.</p>
-                        
-                        <p>Among the books that have influenced me the most are Rising Sign by Jeanne Avery, Saturn: A New Look at an Old Devil by Liz Greene, Cosmos and Psyche by Chris Brennan, and Aspects in Astrology by Sue Tompkins.</p>
-                        
-                        <p>As my path evolved, I felt the need to combine astrology with spirituality. This led me to study Usui Reiki, through which I obtained my Level II certification. During my Reiki sessions, I used the natal chart as a tool for focus and deeper understanding of each individual’s energetic and psychological needs.</p>
-                        
-                        <p>In 2021, I decided to deepen my studies further by enrolling in the astrology school “Εναλλακτική Παιδεία.” There, I trained in predictive techniques, synastry, political and medical astrology, astrocartography, and karmic astrology, having the opportunity to learn from exceptional teachers, including Vasia Konti, Vasia Mavrakis, Dimitris Koronakis, Lili Lalechou, and Nona Voudouri. At the same time, I attended seminars with well-known astrologers, further expanding my perspective and knowledge.</p>
-                        
-                        <p>After graduating, I began working professionally with natal charts, creating detailed, in-depth written analyses for hundreds of individuals. My approach goes beyond prediction, focusing primarily on self-awareness and personal growth.</p>
-                        
-                        <p>My studies continued with a specialization in birth time rectification, under the guidance of Robert Glasscock, with the aim of increasing the accuracy of my predictions. I then followed my original passion—horary astrology—by studying with Deborah Houlding and applying it in practice. Today, horary astrology is an essential part of my services, offering remarkable accuracy for specific questions.</p>
-                        
-                        <p>In parallel, in 2023 I began my studies at the Hellenic Open University in the program “European Studies: History, Society, Culture,” with the intention of connecting astrology with historical and academic research, exploring planetary cycles alongside historical events.</p>
-                        
-                        <p>During my studies, I spent two years in Tenerife through the Erasmus program. There, I had the opportunity to meet people from diverse cultural backgrounds and deepen my understanding of astrocartography, observing firsthand how different locations influence personal experience and life paths.</p>
-                        
-                        <p>Alongside astrology, I have also explored creative writing, attending seminars and integrating writing as a tool for expression and healing.</p>
-                        
-                        <p>My philosophy is based on the idea that astrology does not determine—it guides. It is a tool for self-awareness that helps us understand patterns, prepare ourselves, and make more conscious decisions.</p>
-                        
-                        <p>I believe that each of us has the power to shape our own life. Astrology functions like a language: the more we learn it, the more deeply we understand ourselves and the world around us.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="terms" class="pt-32 pb-16 px-6 relative z-10 border-t border-celestial-gold/10 bg-celestial-dark">
-        <div class="max-w-5xl mx-auto">
+    <section id="about" class="py-32 px-6 relative z-10 bg-space-900/80 border-y border-white/5 backdrop-blur-sm">
+        <div class="max-w-4xl mx-auto">
             <div class="text-center mb-16 reveal">
-                <i data-lucide="scale" class="w-10 h-10 text-celestial-gold mx-auto mb-4 opacity-50"></i>
-                <h2 class="text-3xl font-serif text-white mb-2">Όροι & Προϋποθέσεις</h2>
-                <h3 class="text-celestial-goldlight/80 font-serif italic text-lg mb-6">Terms & Conditions</h3>
+                <h2 class="text-4xl md:text-5xl font-serif text-white mb-6 lang-el">About</h2>
+                <h2 class="text-4xl md:text-5xl font-serif text-white mb-6 lang-en">About</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto"></div>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-12 text-sm text-celestial-stardust font-light text-justify leading-relaxed reveal">
+            <div class="glass-card rounded-3xl p-8 md:p-12 reveal">
+                <div class="space-y-6 text-gray-300 font-light leading-relaxed text-justify lang-el">
+                    <p>Η σχέση μου με την αστρολογία ξεκίνησε το 2015, όπου είχα την τύχη να γνωρίσω μια αστρολόγο που μου έμαθε τα πρώτα βήματα στην ανάγνωση γενέθλιων χαρτών. Από εκείνη τη στιγμή άρχισε ένα βαθύ και συνεχές ταξίδι μελέτης και ανακάλυψης. Μέσα από βιβλία, πρακτική και προσωπική έρευνα, άρχισα να κατανοώ σταδιακά τον πολυδιάστατο και ανεξάντλητο κόσμο της αστρολογίας.</p>
+                    <p>Ανάμεσα στα βιβλία που με επηρέασαν περισσότερο είναι τα Rising Sign της Jeanne Avery, Saturn: A New Look at an Old Devil της Liz Greene, Cosmos and Psyche του Chris Brennan καθώς και το Aspects in Astrology της Sue Tompkins.</p>
+                    <p>Στην πορεία θέλησα να συνδυάσω την αστρολογία με την πνευματικότητα. Έτσι ασχολήθηκα με το Usui Reiki, αποκτώντας τον δεύτερο βαθμό. Μέσα από τις συνεδρίες Reiki χρησιμοποιούσα τον αστρολογικό χάρτη ως εργαλείο εστίασης και βαθύτερης κατανόησης των ενεργειακών και ψυχολογικών αναγκών του κάθε ατόμου.</p>
+                    <p>Το 2021 αποφάσισα να εμβαθύνω ακόμη περισσότερο, φοιτώντας στην αστρολογική σχολή Εναλλακτική Παιδεία. Εκεί εκπαιδεύτηκα σε προβλεπτικά συστήματα, συναστρίες, πολιτική και ιατρική αστρολογία, αστροχαρτογεωγραφία και καρμική αστρολογία, έχοντας την τύχη να διδαχθώ από εξαιρετικούς εισηγητές, όπως η Βάσια Κόντη, η Βάσια Μαυράκη, ο Δημήτρης Κορωνάκης, η Λίλη Λαλεχού και η Νόνα Βουδούρη. Παράλληλα, είχα την ευκαιρία να παρακολουθήσω σεμινάρια με σημαντικούς αστρολόγους, εμπλουτίζοντας περαιτέρω την οπτική και τη γνώση μου.</p>
+                    <p>Μετά την αποφοίτησή μου, ξεκίνησα να αναλύω επαγγελματικά αστρολογικούς χάρτες, δημιουργώντας πλήρεις και αναλυτικές γραπτές ερμηνείες για εκατοντάδες ανθρώπους. Η προσέγγισή μου δεν περιορίζεται στην πρόβλεψη, αλλά εστιάζει κυρίως στην αυτογνωσία και την προσωπική εξέλιξη.</p>
+                    <p>Η μελέτη μου συνεχίστηκε με εξειδίκευση στην εξακρίβωση ώρας γέννησης (rectification), μέσα από την καθοδήγηση του Robert Glasscock, με στόχο την αύξηση της ακρίβειας στις προβλέψεις. Στη συνέχεια ακολούθησα το αρχικό μου πάθος, την ωριαία αστρολογία, παρακολουθώντας μαθήματα της Deborah Houlding και εφαρμόζοντας την πρακτικά. Σήμερα, η ωριαία αστρολογία αποτελεί βασικό κομμάτι των υπηρεσιών μου, καθώς προσφέρει εντυπωσιακή ακρίβεια σε συγκεκριμένα ερωτήματα.</p>
+                    <p>Παράλληλα, το 2023 ξεκίνησα τις σπουδές μου στο Ελληνικό Ανοικτό Πανεπιστήμιο στο πρόγραμμα «Ευρωπαϊκές Σπουδές: Ιστορία, Κοινωνία, Πολιτισμός», με στόχο να συνδέσω την αστρολογία με την ιστορική και ερευνητική μελέτη, εξετάζοντας πλανητικούς κύκλους και ιστορικά γεγονότα.</p>
+                    <p>Κατά τη διάρκεια των σπουδών μου, έζησα για δύο χρόνια στην Τενερίφη μέσω προγράμματος Erasmus. Εκεί είχα την ευκαιρία να γνωρίσω ανθρώπους από διαφορετικά πολιτισμικά υπόβαθρα και να εμβαθύνω στην αστροχαρτογεωγραφία, παρατηρώντας στην πράξη πώς οι τόποι επηρεάζουν την εμπειρία και την πορεία του κάθε ανθρώπου.</p>
+                    <p>Παράλληλα με την αστρολογία, έχω ασχοληθεί με τη δημιουργική γραφή, παρακολουθώντας σχετικά σεμινάρια και ενσωματώνοντας τη γραφή ως εργαλείο έκφρασης και θεραπείας.</p>
+                    <p>Η φιλοσοφία μου βασίζεται στην ιδέα ότι η αστρολογία δεν καθορίζει, αλλά καθοδηγεί. Είναι ένα εργαλείο αυτογνωσίας που μας βοηθά να κατανοήσουμε τις τάσεις, να προετοιμαστούμε και να πάρουμε πιο συνειδητές αποφάσεις.</p>
+                    <p>Πιστεύω πως ο καθένας από εμάς έχει τη δύναμη να διαμορφώσει τη ζωή του. Η αστρολογία λειτουργεί ως μία γλώσσα που όσο περισσότερο τη μαθαίνουμε, τόσο βαθύτερα κατανοούμε τον εαυτό μας και τον κόσμο γύρω μας.</p>
+                </div>
+
+                <div class="space-y-6 text-gray-300 font-light leading-relaxed text-justify lang-en">
+                    <p>My journey with astrology began in 2015, when an astrologer crossed my path and introduced me to the fundamentals of reading natal charts. From that moment, a deep and ongoing path of study and discovery unfolded. Through books, practice, and personal research, I gradually began to understand the multidimensional and ever-expanding world of astrology.</p>
+                    <p>Among the books that have influenced me the most are Rising Sign by Jeanne Avery, Saturn: A New Look at an Old Devil by Liz Greene, Cosmos and Psyche by Chris Brennan, and Aspects in Astrology by Sue Tompkins.</p>
+                    <p>As my path evolved, I felt the need to combine astrology with spirituality. This led me to study Usui Reiki, through which I obtained my Level II certification. During my Reiki sessions, I used the natal chart as a tool for focus and deeper understanding of each individual’s energetic and psychological needs.</p>
+                    <p>In 2021, I decided to deepen my studies further by enrolling in the astrology school “Εναλλακτική Παιδεία.” There, I trained in predictive techniques, synastry, political and medical astrology, astrocartography, and karmic astrology, having the opportunity to learn from exceptional teachers, including Vasia Konti, Vasia Mavrakis, Dimitris Koronakis, Lili Lalechou, and Nona Voudouri. At the same time, I attended seminars with well-known astrologers, further expanding my perspective and knowledge.</p>
+                    <p>After graduating, I began working professionally with natal charts, creating detailed, in-depth written analyses for hundreds of individuals. My approach goes beyond prediction, focusing primarily on self-awareness and personal growth.</p>
+                    <p>My studies continued with a specialization in birth time rectification, under the guidance of Robert Glasscock, with the aim of increasing the accuracy of my predictions. I then followed my original passion—horary astrology—by studying with Deborah Houlding and applying it in practice. Today, horary astrology is an essential part of my services, offering remarkable accuracy for specific questions.</p>
+                    <p>In parallel, in 2023 I began my studies at the Hellenic Open University in the program “European Studies: History, Society, Culture,” with the intention of connecting astrology with historical and academic research, exploring planetary cycles alongside historical events.</p>
+                    <p>During my studies, I spent two years in Tenerife through the Erasmus program. There, I had the opportunity to meet people from diverse cultural backgrounds and deepen my understanding of astrocartography, observing firsthand how different locations influence personal experience and life paths.</p>
+                    <p>Alongside astrology, I have also explored creative writing, attending seminars and integrating writing as a tool for expression and healing.</p>
+                    <p>My philosophy is based on the idea that astrology does not determine—it guides. It is a tool for self-awareness that helps us understand patterns, prepare ourselves, and make more conscious decisions.</p>
+                    <p>I believe that each of us has the power to shape our own life. Astrology functions like a language: the more we learn it, the more deeply we understand ourselves and the world around us.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="terms" class="py-20 px-6 relative z-10 border-t border-white/5">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12 reveal">
+                <i data-lucide="scale" class="w-8 h-8 text-gold-500/50 mx-auto mb-4"></i>
+                <h2 class="text-3xl font-serif text-white mb-2 lang-el">Όροι & Προϋποθέσεις</h2>
+                <h2 class="text-3xl font-serif text-white mb-2 lang-en">Terms & Conditions</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 text-sm text-gray-400 font-light leading-relaxed text-justify lang-el reveal">
                 <div class="space-y-4">
                     <p>Οι αστρολογικές υπηρεσίες που παρέχονται έχουν συμβουλευτικό χαρακτήρα και σκοπό την προσωπική καθοδήγηση και αυτογνωσία. Δεν αντικαθιστούν επαγγελματικές συμβουλές (ιατρικές, νομικές, οικονομικές ή ψυχολογικές).</p>
                     <p>Για την πραγματοποίηση της ανάλυσης, είναι απαραίτητη η παροχή σωστών και ακριβών στοιχείων (ημερομηνία, ώρα και τόπος γέννησης). Η ακρίβεια των αποτελεσμάτων εξαρτάται από την ακρίβεια των πληροφοριών που δίνονται.</p>
                     <p>Σε περίπτωση που η ώρα γέννησης δεν είναι γνωστή, τα αποτελέσματα ενδέχεται να είναι περιορισμένα, εκτός αν επιλεγεί η υπηρεσία διόρθωσης ώρας γέννησης.</p>
+                </div>
+                <div class="space-y-4">
                     <p>Οι υπηρεσίες παρέχονται κατόπιν πληρωμής και δεν πραγματοποιούνται επιστροφές χρημάτων μετά την ολοκλήρωση της ανάλυσης.</p>
                     <p>Ο χρόνος παράδοσης της υπηρεσίας ενδέχεται να διαφέρει ανάλογα με τον φόρτο εργασίας και το είδος της ανάλυσης. Ο πελάτης ενημερώνεται σχετικά με τον εκτιμώμενο χρόνο.</p>
                     <p>Όλες οι πληροφορίες που παρέχονται από τον πελάτη παραμένουν αυστηρά εμπιστευτικές και χρησιμοποιούνται αποκλειστικά για την παροχή της υπηρεσίας.</p>
-                    <p class="font-medium text-celestial-goldlight">Με την κράτηση ή την αγορά οποιασδήποτε υπηρεσίας, αποδέχεσαι τους παραπάνω όρους.</p>
+                    <p class="font-medium text-gold-400 mt-6 border-t border-gold-500/20 pt-4">Με την κράτηση ή την αγορά οποιασδήποτε υπηρεσίας, αποδέχεσαι τους παραπάνω όρους.</p>
                 </div>
+            </div>
 
+            <div class="grid md:grid-cols-2 gap-8 text-sm text-gray-400 font-light leading-relaxed text-justify lang-en reveal">
                 <div class="space-y-4">
                     <p>All astrological services provided are for guidance and self-awareness purposes only. They do not replace professional advice (medical, legal, financial, or psychological).</p>
                     <p>For the analysis to be accurate, it is necessary to provide correct and precise birth details (date, time, and place of birth). The accuracy of the results depends on the accuracy of the information provided.</p>
                     <p>If the birth time is unknown, the results may be limited unless the Birth Time Rectification service is selected.</p>
+                </div>
+                <div class="space-y-4">
                     <p>All services are provided after payment is completed. No refunds are issued once the analysis has been delivered.</p>
                     <p>Delivery time may vary depending on the type of service and current workload. You will be informed about the estimated timeframe.</p>
                     <p>All personal information shared is kept strictly confidential and used solely for the purpose of delivering the service.</p>
-                    <p class="font-medium text-celestial-goldlight">By booking or purchasing any service, you agree to the above terms and conditions.</p>
+                    <p class="font-medium text-gold-400 mt-6 border-t border-gold-500/20 pt-4">By booking or purchasing any service, you agree to the above terms and conditions.</p>
                 </div>
             </div>
 
-            <div class="mt-20 pt-8 border-t border-celestial-stardust/10 text-center flex flex-col items-center">
-                <div class="text-celestial-gold font-serif text-2xl tracking-widest font-bold mb-4 opacity-50">ASTRA</div>
-                <p class="text-xs text-celestial-stardust/50 tracking-widest uppercase">© 2026 Astrological Services. All rights reserved.</p>
+            <div class="mt-20 text-center flex flex-col items-center">
+                <div class="text-gold-500 font-serif text-xl tracking-widest font-bold mb-4 opacity-50 flex items-center gap-2">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i> ASTRA
+                </div>
+                <p class="text-xs text-gray-600 tracking-widest uppercase">© 2026 Astrological Services.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Initialize Lucide Icons
+        // 1. Initialize Lucide Icons
         lucide.createIcons();
 
-        // Scroll Reveal Animation Script
+        // 2. Language Switcher Logic
+        const body = document.body;
+        const langBtn = document.getElementById('lang-btn');
+        const langIndicator = document.getElementById('lang-indicator');
+
+        langBtn.addEventListener('click', () => {
+            if (body.classList.contains('lang-el')) {
+                // Switch to English
+                body.classList.remove('lang-el');
+                body.classList.add('lang-en');
+                langIndicator.textContent = 'EL';
+            } else {
+                // Switch to Greek
+                body.classList.remove('lang-en');
+                body.classList.add('lang-el');
+                langIndicator.textContent = 'EN';
+            }
+            
+            // Retrigger intersection observer for reveals if needed
+            document.querySelectorAll('.reveal').forEach(el => {
+                el.classList.remove('active');
+                setTimeout(() => el.classList.add('active'), 50);
+            });
+        });
+
+        // 3. Scroll Reveal Animations
         const observerOptions = {
             root: null,
             rootMargin: '0px',
@@ -460,6 +460,18 @@
 
         document.querySelectorAll('.reveal').forEach(el => {
             observer.observe(el);
+        });
+
+        // 4. Navbar Background effect on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-space-900/90', 'shadow-lg');
+                navbar.classList.remove('bg-space-900/50');
+            } else {
+                navbar.classList.add('bg-space-900/50');
+                navbar.classList.remove('bg-space-900/90', 'shadow-lg');
+            }
         });
     </script>
 </body>
